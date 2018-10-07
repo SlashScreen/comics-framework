@@ -1,0 +1,52 @@
+<head>
+  <link rel="stylesheet" type="text/css" href="style/comicstyle.css" media="screen" />
+  <script type="text/javascript">
+    var getParams = function (url) {
+      var params = {};
+      var parser = document.createElement('a');
+      parser.href = url;
+      var query = parser.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        params[pair[0]] = decodeURIComponent(pair[1]);
+      }
+      return params;
+    };
+    var generateUrl = function (page){
+      var url = window.location.href.split("?")[0]+"?page="+page
+      return(url)
+    }
+    res = getParams(window.location.href);
+    var img = res.page
+    if (isNaN(img)){
+      img = 1;
+    }
+    function changeImage() {
+        document.getElementById("panel").src="./imgs/img"+img+".png"
+        document.getElementById("panel").onerror=function(){
+          img--;
+          changeImage();
+        };
+    }
+    function increment(){
+      img++;
+      window.location = generateUrl(img)
+    }
+    function decrement(){
+      if (img > 1){
+        img--;
+      }
+      window.location = generateUrl(img)
+    }
+  </script>
+</head>
+<body>
+  <div id="main_img">
+    <img id="panel" src="./imgs/img1.png" onload="changeImage();">
+  </div>
+  <div id="thumb_img">
+    <a onclick='decrement();'>back</a>
+    <a onclick='increment();'>next</a>
+  </div>
+</body>
